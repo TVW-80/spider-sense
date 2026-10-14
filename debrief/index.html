@@ -20,8 +20,12 @@
 <style>
   :root {
     --ink: #121212;
-    --paper: #f3eede;
-    --panel: #ffffff;
+    --paper: #d3d8de;                 /* silver page tone */
+    --silver-light: #eef1f4;
+    --silver: #c7ccd3;
+    --silver-dark: #a6acb5;
+    --panel: linear-gradient(158deg, #ffffff 0%, #eef1f4 42%, #d9dee4 100%);          /* chrome plate */
+    --chrome: linear-gradient(180deg, #f7f9fa 0%, #d4d9df 47%, #b7bdc6 53%, #e8ebee 100%); /* brushed metal strip */
     --green: #15a34a;
     --green-bright: #28c766;
     --green-deep: #0f7a37;
@@ -36,9 +40,12 @@
   body {
     background-color: var(--paper);
     background-image:
-      radial-gradient(circle, rgba(18,18,18,0.06) 1px, transparent 1.3px),
-      radial-gradient(circle at 50% -5%, rgba(21,163,74,0.14), transparent 55%);
-    background-size: 7px 7px, 100% 100%;
+      radial-gradient(circle, rgba(18,18,18,0.05) 1px, transparent 1.3px),
+      linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0) 32%),
+      radial-gradient(circle at 50% -5%, rgba(21,163,74,0.12), transparent 55%),
+      linear-gradient(160deg, #e7eaee 0%, #cfd4da 50%, #bcc2ca 100%);
+    background-size: 7px 7px, 100% 100%, 100% 100%, 100% 100%;
+    background-attachment: fixed;
     font-family: var(--body);
     color: var(--ink);
     line-height: 1.65;
@@ -52,15 +59,15 @@
   /* ---- top strip ---- */
   .issue-strip {
     display: flex; justify-content: space-between; align-items: center;
-    background: var(--ink); color: var(--paper);
+    background: var(--chrome); color: var(--ink);
     font-family: var(--display); letter-spacing: 0.06em;
     font-size: 15px; padding: 8px 18px;
     margin: 22px 0 0;
     border: 3px solid var(--ink);
   }
-  .issue-strip .num { color: var(--green-bright); }
-  .issue-strip a { color: var(--paper); border: none; font-family: var(--body); font-size: 11px; letter-spacing: 0.1em; font-weight: 700; }
-  .issue-strip a:hover { background: none; color: var(--green-bright); }
+  .issue-strip .num { color: var(--green-deep); }
+  .issue-strip a { color: var(--ink); border: none; font-family: var(--body); font-size: 11px; letter-spacing: 0.1em; font-weight: 700; }
+  .issue-strip a:hover { background: none; color: var(--green-deep); }
 
   /* ---- masthead ---- */
   header.cover {
@@ -76,7 +83,7 @@
     background-image: radial-gradient(circle, rgba(21,163,74,0.10) 1.3px, transparent 1.6px);
     background-size: 9px 9px; pointer-events: none;
   }
-  .emblem-sm { position: relative; width: 120px; height: 120px; margin: 0 auto 6px; filter: drop-shadow(4px 4px 0 rgba(18,18,18,0.16)); }
+  .emblem-sm { position: relative; width: 158px; height: 158px; margin: 0 auto 4px; filter: drop-shadow(5px 5px 0 rgba(18,18,18,0.18)); }
   h1.masthead {
     position: relative; font-family: var(--display);
     font-size: clamp(42px, 11vw, 74px); line-height: 0.84;
@@ -163,8 +170,8 @@
   }
   .entry-num {
     position: absolute; top: -16px; right: -10px;
-    font-family: var(--display); font-size: 30px; color: var(--green);
-    background: var(--paper); border: 3px solid var(--ink);
+    font-family: var(--display); font-size: 30px; color: var(--green-deep);
+    background: var(--silver-light); border: 3px solid var(--ink);
     width: 48px; height: 48px; line-height: 44px; text-align: center;
     border-radius: 50%; box-shadow: 3px 3px 0 var(--ink);
     transform: rotate(8deg);
@@ -249,7 +256,7 @@
   </div>
 
   <header class="cover">
-    <img class="emblem-sm" src="../images/spider-sense-emblem.svg" alt="Spider Sense emblem — a spider on a green web">
+    <img class="emblem-sm" src="../images/spider-sense-logo.png" alt="Spider Sense logo — a masked web-slinger in a green web">
     <h1 class="masthead">SPIDER <span>SENSE</span></h1>
     <p class="masthead-sub">Operation Debrief</p>
     <p class="subject">A Flipper Zero surveillance-device field sensor — from a custom firmware, through a companion app, to a live feed on the Anansi intelligence globe.</p>
