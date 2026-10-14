@@ -7,202 +7,385 @@
 <meta name="description" content="Spider Sense — a Flipper Zero surveillance-device field sensor, from the ?xOS firmware through the Flipper app to its integration into the Anansi intelligence globe.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #060606; --panel: #0d0d0d; --red: #c81e1e; --red-bright: #ff2b2b;
-    --gold: #d4af37; --gold-bright: #f4cf5e; --text: #eae7e2; --text-dim: #8a8a8a;
-    --line: rgba(212,175,55,0.18); --mono: 'IBM Plex Mono', monospace; --display: 'Space Grotesk', sans-serif;
+    --ink: #121212;
+    --paper: #f3eede;
+    --panel: #ffffff;
+    --green: #15a34a;
+    --green-bright: #28c766;
+    --green-deep: #0f7a37;
+    --yellow: #ffe24a;
+    --red: #ef3e36;
+    --display: 'Bangers', cursive;
+    --body: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--mono); line-height: 1.7; -webkit-font-smoothing: antialiased; }
-  body::before { content: "CLASSIFIED"; position: fixed; top: 45%; left: 50%; transform: translate(-50%,-50%) rotate(-28deg); font-family: var(--display); font-size: 13vw; font-weight: 700; color: rgba(200,30,30,0.035); letter-spacing: 0.1em; pointer-events: none; z-index: 0; white-space: nowrap; }
-  .wrap { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 0 26px 100px; }
-  a { color: var(--gold-bright); }
-  img { max-width: 100%; display: block; border: 1px solid var(--line); }
-  .classbar { background: var(--red); color: #0a0a0a; font-family: var(--display); font-weight: 700; font-size: 12px; letter-spacing: 0.18em; text-align: center; padding: 7px 0; }
-  header.doc { padding: 40px 0 28px; border-bottom: 1px double var(--line); margin-bottom: 30px; }
-  .doc-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 11px; color: var(--text-dim); letter-spacing: 0.04em; margin-bottom: 18px; }
-  .doc-meta span b { color: var(--gold-bright); font-weight: 500; }
-  h1.title { font-family: var(--display); font-size: clamp(26px,4vw,36px); font-weight: 700; letter-spacing: 0.01em; color: var(--text); margin: 0 0 6px; }
-  h1.title span { color: var(--red-bright); }
-  .subject-line { font-size: 13px; color: var(--text-dim); letter-spacing: 0.03em; }
-  .subject-line b { color: var(--text); font-weight: 500; }
-  section { margin: 44px 0; }
-  .sec-tag { display: inline-block; font-family: var(--display); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; color: var(--gold-bright); border: 1px solid rgba(212,175,55,0.4); padding: 4px 10px; margin-bottom: 16px; }
-  h2 { font-family: var(--display); font-size: 20px; font-weight: 600; color: var(--text); margin: 0 0 14px; border-left: 3px solid var(--red); padding-left: 12px; }
-  p { font-size: 14.5px; color: #cfcbc4; margin: 0 0 14px; }
-  strong { color: var(--gold-bright); font-weight: 600; }
-  code { background: rgba(255,255,255,0.05); padding: 1px 6px; border-radius: 2px; font-size: 13px; color: var(--gold-bright); }
-  figure { margin: 22px 0; }
-  figcaption { font-size: 11px; color: var(--text-dim); letter-spacing: 0.03em; margin-top: 8px; text-transform: uppercase; }
-  figcaption::before { content: "FIG. — "; color: var(--red-bright); }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 6px 0 0; }
-  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); }
-  th { font-family: var(--display); font-size: 11px; letter-spacing: 0.08em; color: var(--gold-bright); text-transform: uppercase; font-weight: 600; }
-  td { color: #cfcbc4; }
-  .logentry { border-left: 2px solid var(--line); padding: 4px 0 4px 18px; margin: 20px 0; position: relative; }
-  .logentry::before { content: ""; position: absolute; left: -5px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: var(--red-bright); box-shadow: 0 0 6px var(--red-bright); }
-  .logentry h3 { font-family: var(--display); font-size: 15px; font-weight: 600; color: var(--text); margin: 0 0 6px; }
-  .logentry .tag { font-size: 10px; color: var(--gold-bright); letter-spacing: 0.08em; margin-bottom: 8px; display: inline-block; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    background-color: var(--paper);
+    background-image:
+      radial-gradient(circle, rgba(18,18,18,0.06) 1px, transparent 1.3px),
+      radial-gradient(circle at 50% -5%, rgba(21,163,74,0.14), transparent 55%);
+    background-size: 7px 7px, 100% 100%;
+    font-family: var(--body);
+    color: var(--ink);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 20px 90px; }
+  a { color: var(--green-deep); font-weight: 600; text-decoration: none; border-bottom: 2px solid var(--green); }
+  a:hover { background: var(--green); color: #fff; border-bottom-color: var(--ink); }
+  img { max-width: 100%; display: block; }
+
+  /* ---- top strip ---- */
+  .issue-strip {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--ink); color: var(--paper);
+    font-family: var(--display); letter-spacing: 0.06em;
+    font-size: 15px; padding: 8px 18px;
+    margin: 22px 0 0;
+    border: 3px solid var(--ink);
+  }
+  .issue-strip .num { color: var(--green-bright); }
+  .issue-strip a { color: var(--paper); border: none; font-family: var(--body); font-size: 11px; letter-spacing: 0.1em; font-weight: 700; }
+  .issue-strip a:hover { background: none; color: var(--green-bright); }
+
+  /* ---- masthead ---- */
+  header.cover {
+    position: relative; overflow: hidden;
+    background: var(--panel);
+    border: 4px solid var(--ink); border-top: none;
+    box-shadow: 9px 9px 0 var(--ink);
+    padding: 30px 28px 34px;
+    text-align: center;
+  }
+  header.cover::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(21,163,74,0.10) 1.3px, transparent 1.6px);
+    background-size: 9px 9px; pointer-events: none;
+  }
+  .emblem-sm { position: relative; width: 120px; height: 120px; margin: 0 auto 6px; filter: drop-shadow(4px 4px 0 rgba(18,18,18,0.16)); }
+  h1.masthead {
+    position: relative; font-family: var(--display);
+    font-size: clamp(42px, 11vw, 74px); line-height: 0.84;
+    margin: 4px 0 0; letter-spacing: 0.02em; color: var(--ink);
+    text-shadow: 3px 3px 0 var(--green);
+  }
+  h1.masthead span { color: var(--green); text-shadow: 3px 3px 0 var(--ink); }
+  .masthead-sub { position: relative; font-weight: 800; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; margin: 16px 0 0; }
+  .subject {
+    position: relative; max-width: 620px; margin: 14px auto 0;
+    font-size: 14.5px; color: #333; font-weight: 500;
+  }
+
+  /* ---- section ---- */
+  section { margin: 46px 0 0; }
+  .sec-tag {
+    display: inline-block; transform: rotate(-1.5deg);
+    font-family: var(--display); font-size: 17px; letter-spacing: 0.05em;
+    color: var(--paper); background: var(--ink);
+    padding: 6px 18px 4px; margin: 0 0 4px;
+    border: 3px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--green);
+  }
+  .sec-tag .n { color: var(--green-bright); }
+  h2 {
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(26px, 5vw, 36px); line-height: 1;
+    color: var(--ink); margin: 14px 0 18px; letter-spacing: 0.01em;
+  }
+  h2 .accent { color: var(--green); }
+
+  /* ---- base panel ---- */
+  .panel {
+    position: relative; background: var(--panel);
+    border: 3px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--ink);
+    padding: 22px 24px; margin: 0 0 22px;
+  }
+  p { font-size: 15px; color: #2b2b2b; margin: 0 0 14px; }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--green-deep); font-weight: 700; }
+  b { color: var(--ink); font-weight: 700; }
+  code {
+    font-family: var(--mono); font-size: 13px;
+    background: var(--ink); color: var(--green-bright);
+    padding: 1px 6px; border-radius: 3px;
+  }
+
+  /* ---- yellow narration / caption box ---- */
+  .caption {
+    background: var(--yellow); border: 3px solid var(--ink);
+    box-shadow: 5px 5px 0 var(--ink);
+    padding: 14px 18px; margin: 0 0 24px;
+    font-size: 14.5px; font-weight: 600; color: var(--ink);
+    transform: rotate(-0.4deg);
+  }
+  .caption::before {
+    content: "▸ "; color: var(--green-deep); font-weight: 800;
+  }
+
+  /* ---- assets table ---- */
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 2px solid rgba(18,18,18,0.1); vertical-align: top; }
+  th { font-family: var(--display); font-weight: 400; font-size: 15px; letter-spacing: 0.04em; color: var(--paper); background: var(--green-deep); border-bottom: 3px solid var(--ink); }
+  td { color: #2b2b2b; }
+  td:first-child { font-weight: 700; color: var(--ink); white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+
+  /* ---- field-log entries as comic panels ---- */
+  .logentry {
+    position: relative; background: var(--panel);
+    border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink);
+    padding: 20px 24px 22px; margin: 0 0 26px;
+  }
+  .logentry .tag {
+    display: inline-block; font-family: var(--display); font-size: 14px;
+    letter-spacing: 0.05em; color: var(--ink); background: var(--green-bright);
+    border: 2px solid var(--ink); padding: 3px 12px 1px; margin: 0 0 10px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .logentry h3 {
+    font-family: var(--display); font-weight: 400; font-size: 25px; line-height: 1.05;
+    color: var(--ink); margin: 4px 0 12px; letter-spacing: 0.01em;
+  }
+  .entry-num {
+    position: absolute; top: -16px; right: -10px;
+    font-family: var(--display); font-size: 30px; color: var(--green);
+    background: var(--paper); border: 3px solid var(--ink);
+    width: 48px; height: 48px; line-height: 44px; text-align: center;
+    border-radius: 50%; box-shadow: 3px 3px 0 var(--ink);
+    transform: rotate(8deg);
+  }
+
+  /* ---- figure as comic frame ---- */
+  figure { margin: 18px 0 2px; }
+  figure img { border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--green); background: #000; }
+  figcaption {
+    font-size: 12px; font-weight: 700; color: var(--ink);
+    letter-spacing: 0.02em; margin-top: 12px; text-transform: uppercase;
+  }
+  figcaption::before { content: "FIG — "; color: var(--green-deep); }
+
+  /* ---- schematic / code ---- */
+  pre.schematic {
+    background: var(--ink); color: var(--green-bright);
+    border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--green);
+    padding: 20px; font-family: var(--mono); font-size: 12px;
+    line-height: 1.5; overflow-x: auto; margin: 16px 0;
+  }
+
+  /* ---- bullet list ---- */
   ul.debrief { list-style: none; padding: 0; margin: 0; }
-  ul.debrief li { padding: 14px 0; border-bottom: 1px dashed var(--line); font-size: 14px; color: #cfcbc4; }
+  ul.debrief li {
+    position: relative; padding: 12px 0 12px 30px;
+    border-bottom: 2px dashed rgba(18,18,18,0.14);
+    font-size: 14.5px; color: #2b2b2b;
+  }
+  ul.debrief li::before {
+    content: "✦"; position: absolute; left: 4px; top: 11px;
+    color: var(--green); font-size: 15px;
+  }
   ul.debrief li:last-child { border-bottom: none; }
-  ul.debrief li b { color: var(--red-bright); }
-  pre.schematic { background: var(--panel); border: 1px solid var(--line); padding: 20px; font-size: 12px; color: var(--gold-bright); overflow-x: auto; line-height: 1.5; }
-  .stamp { display: inline-block; border: 2px solid var(--red-bright); color: var(--red-bright); font-family: var(--display); font-weight: 700; font-size: 13px; letter-spacing: 0.1em; padding: 6px 14px; transform: rotate(-3deg); margin: 10px 0 0; }
-  .credit-box { border: 1px solid var(--line); background: var(--panel); padding: 20px 22px; font-size: 13.5px; color: #cfcbc4; }
-  .credit-box b { color: var(--gold-bright); }
-  footer.doc { margin-top: 60px; padding-top: 20px; border-top: 1px double var(--line); font-size: 11px; color: var(--text-dim); letter-spacing: 0.05em; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-  footer.doc a { color: var(--text-dim); }
+  ul.debrief li b { color: var(--green-deep); }
+
+  /* ---- stamp / bang callout ---- */
+  .stamp {
+    display: inline-block; transform: rotate(-3deg);
+    font-family: var(--display); font-size: 20px; letter-spacing: 0.04em;
+    color: var(--paper); background: var(--green);
+    border: 3px solid var(--ink); padding: 8px 20px 5px;
+    box-shadow: 5px 5px 0 var(--ink); margin: 18px 0 4px;
+  }
+  .stamp.done { background: var(--ink); color: var(--green-bright); }
+
+  /* ---- credits ---- */
+  .credit-box {
+    background: var(--panel); border: 3px solid var(--ink);
+    box-shadow: 5px 5px 0 var(--ink);
+    padding: 18px 22px; margin: 0 0 18px; font-size: 14px; color: #2b2b2b;
+  }
+  .credit-box .who {
+    display: block; font-family: var(--display); font-size: 20px;
+    letter-spacing: 0.02em; color: var(--green-deep); margin: 0 0 6px;
+  }
+  .credit-box a { border-bottom-width: 2px; }
+
+  /* ---- footer ---- */
+  footer.strip {
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+    background: var(--green); color: var(--ink);
+    font-family: var(--display); letter-spacing: 0.05em; font-size: 15px;
+    padding: 10px 18px; margin: 46px 0 0;
+    border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink);
+  }
+  footer.strip a { color: var(--ink); border: none; font-family: var(--body); font-size: 12px; font-weight: 800; letter-spacing: 0.08em; }
+  footer.strip a:hover { background: var(--ink); color: var(--green-bright); padding: 2px 6px; }
+
+  @media (max-width: 560px) {
+    header.cover, .panel, .logentry { box-shadow: 5px 5px 0 var(--ink); }
+    .entry-num { right: 4px; }
+  }
 </style>
 </head>
 <body>
-
-<div class="classbar">TOP SECRET // SI-TK // NOFORN — AUTHORIZED PERSONNEL ONLY</div>
-
 <div class="wrap">
 
-<header class="doc">
-  <div class="doc-meta">
-    <span>FILE: <b>OP-SPIDER-SENSE</b></span>
-    <span>PARENT OP: <b>OP-ANANSI-757</b></span>
-    <span>STATUS: <b>FIELD-READY</b></span>
-  </div>
-  <h1 class="title">OPERATION <span>SPIDER SENSE</span></h1>
-  <div class="subject-line"><b>SUBJECT:</b> A Flipper Zero surveillance-device field sensor — from a custom firmware, through a companion app, to a live feed on the Anansi intelligence globe.</div>
-</header>
-
-<section>
-  <div class="sec-tag">01 // MISSION BRIEF</div>
-  <h2>Overview</h2>
-  <p><strong>Spider Sense</strong> turns a Flipper Zero and a cheap ESP32 Wi-Fi board into a
-  pocket detector for surveillance hardware — Flock ALPR cameras, Axon gear, generic IP cameras,
-  Ring, Wi-Fi deauthers, evil-twin access points and pentest kit — and then pipes what it finds
-  into <strong>Anansi</strong>, the regional intelligence globe, as a mappable layer. It is the
-  field-sensor arm of Operation Anansi: the globe watches the region from above; Spider Sense
-  walks the street and reports what is actually transmitting in the room.</p>
-  <p>The work came in three parts, in this order: a custom Flipper firmware to live on
-  (<strong>?xOS</strong>), the sensor + app that are the real payload (<strong>Spider Sense</strong>),
-  and the bridge that feeds it back to the globe (<strong>Anansi integration</strong>).</p>
-
-  <h2 style="margin-top:30px;">Assets &amp; Methods</h2>
-  <table>
-    <tr><th>Asset</th><th>Function</th></tr>
-    <tr><td>Flipper Zero</td><td>Handheld host — display, alerts, controls, GPIO bridge</td></tr>
-    <tr><td>?xOS firmware</td><td>Personal Flipper firmware (official-based), ghost-themed, Spider Sense bundled</td></tr>
-    <tr><td>Wi-Fi Dev Board (ESP32-S2)</td><td>Headless sensor — 2.4 GHz sniffing, detection matching, UART out</td></tr>
-    <tr><td>Spider Sense firmware</td><td>SquachWatch detection engine, re-stated as a serial sensor build</td></tr>
-    <tr><td>Spider Sense app (.fap)</td><td>Flipper app — live list, detail, vibrate/LED/sound alerts</td></tr>
-    <tr><td>Wire protocol</td><td><code>SQW,*</code> text lines over GPIO UART, 115200</td></tr>
-    <tr><td>Anansi integration</td><td>God's Eye View data layer: serial middleware → GeoJSON → globe</td></tr>
-    <tr><td>Detection catalog</td><td>Flock, Axon, ALPR, camera, Ring, deauth, evil-twin, pentest gear</td></tr>
-  </table>
-</section>
-
-<section>
-  <div class="sec-tag">02 // FIELD LOG</div>
-  <h2>Operational Timeline</h2>
-
-  <div class="logentry">
-    <span class="tag">ENTRY 001 — PART ONE · THE FIRMWARE</span>
-    <h3>?xOS — a Flipper to live on</h3>
-    <p>Before the sensor, the handheld needed its own identity. <strong>?xOS</strong> (by
-    <strong>whoXisXhe</strong>) is a personal Flipper Zero firmware that swaps the stock dolphin
-    for a spider/ghost world. It was built twice on purpose: first on <strong>RogueMaster</strong>
-    — a full custom firmware with hundreds of bundled tools, where ~<strong>523</strong> of its
-    apps compiled cleanly after a build-and-triage pass — then rebuilt from scratch on the
-    <strong>official Flipper firmware (1.4.3, API 87.1)</strong> for a clean, upstream-compatible
-    base, renamed <strong>?xOS</strong>.</p>
-    <p>Every piece of dolphin art is replaced by <strong>original characters drawn in code</strong>
-    — generic arcade-style ghosts and a masked web-slinger, not anybody's licensed mascots — from
-    a Python pipeline that renders 1-bit frames with the Flipper's own fonts: eight idle
-    animations (a web-weaver, a graveyard float, peek-a-boo, rise-from-grave, a corridor chase, a
-    conga line, a spooked jump, a vanish), plus every system screen (success, save, NFC/RFID,
-    Sub-GHz, U2F, pairing, the passport portraits, the CLI banner). Spider Sense ships inside it.</p>
-    <figure>
-      <img src="../images/xos-ghosts.gif" alt="?xOS original ghost idle animations on the Flipper screen">
-      <figcaption>?xOS idle animations — original ghost art, rendered from code, playing on the 128×64 screen</figcaption>
-    </figure>
+  <div class="issue-strip">
+    <span>OPERATION&nbsp;ANANSI</span>
+    <span>FIELD OPS&nbsp;·&nbsp;<span class="num">ISSUE 01</span></span>
   </div>
 
-  <div class="logentry">
-    <span class="tag">ENTRY 002 — THE SENSOR</span>
-    <h3>Spider Sense sensor — ESP32 on the GPIO header</h3>
-    <p>The detector itself is the <strong>SquachWatch</strong> engine re-stated as a headless
-    serial sensor for the official Flipper <strong>Wi-Fi Dev Board (ESP32-S2)</strong>. It puts the
-    radio in listen-only mode, hops channels 1–13, and matches every frame against SquachWatch's
-    signature tables — the same OUI / SSID / behavior rules that power the full device — then
-    streams one text line per finding out of UART0 to the Flipper's GPIO pins (13/14) at 115200.
-    No network, no beacon of its own: it only listens, so nothing in the room can tell it is
-    there.</p>
-    <p>One hard limit shaped everything: the S2 has <strong>no Bluetooth radio at all</strong>. So
-    the whole Wi-Fi catalog works — Flock, Axon, ALPR, cameras, Ring, deauth floods, evil-twin
-    APs, and pentest gear like Pwnagotchi and the Wi-Fi Pineapple — but the Bluetooth half of
-    SquachWatch (AirTags, trackers, camera glasses, BLE skimmers, Remote ID drones) sits dark until
-    the sensor moves to a Bluetooth-capable board. The code for those detections already exists;
-    the chip just can't run them.</p>
-  </div>
+  <header class="cover">
+    <img class="emblem-sm" src="../images/spider-sense-emblem.svg" alt="Spider Sense emblem — a spider on a green web">
+    <h1 class="masthead">SPIDER <span>SENSE</span></h1>
+    <p class="masthead-sub">Operation Debrief</p>
+    <p class="subject">A Flipper Zero surveillance-device field sensor — from a custom firmware, through a companion app, to a live feed on the Anansi intelligence globe.</p>
+  </header>
 
-  <div class="logentry">
-    <span class="tag">ENTRY 003 — PART TWO · THE MEAT</span>
-    <h3>Spider Sense — the Flipper app</h3>
-    <p>This is the core of the project. <strong>Spider Sense</strong> is a native Flipper Zero app
-    (<code>.fap</code>) that reads the sensor's lines over the GPIO UART and turns them into a live
-    operator display. It opens on an Anansi splash, then shows the latest detection, a running
-    list of the last 32, and a detail view per device (type, vendor, MAC, RSSI, channel,
-    confidence). Each <b>new</b> detection buzzes the Flipper, flashes the LED, and chirps — the
-    LED on the board flashes too, so it works even glanced-at in a pocket.</p>
-    <p>Controls map to the pad: <b>OK</b> opens the list, <b>Up</b> pauses, <b>Down</b> locks or
-    hops the channel, <b>Left</b> toggles sound, <b>Right</b> steps the minimum confidence
-    (LOW → MED → HIGH) so a passing ESP32 dev board doesn't cry wolf as a possible Flock camera.
-    It's built against the <strong>dev-channel SDK</strong> so the same <code>.fap</code> loads on
-    RogueMaster, Momentum, Unleashed and official firmware — and confirmed <b>LIVE</b> on real
-    hardware, streaming detections from the board on the header.</p>
-    <figure>
-      <img src="../images/spider-sense-ui.png" alt="Spider Sense Flipper app — splash screen and live detection screen">
-      <figcaption>Spider Sense on the Flipper — the Anansi splash (top) and a live FLOCK detection with signal, channel and confidence (bottom)</figcaption>
-    </figure>
-  </div>
+  <!-- 01 -->
+  <section>
+    <div class="sec-tag"><span class="n">01</span> · MISSION BRIEF</div>
+    <h2>The <span class="accent">Setup</span></h2>
+    <div class="caption">The globe watches the region from above. Spider Sense walks the street and reports what's actually transmitting in the room.</div>
+    <div class="panel">
+      <p><strong>Spider Sense</strong> turns a Flipper Zero and a cheap ESP32 Wi-Fi board into a
+      pocket detector for surveillance hardware — Flock ALPR cameras, Axon gear, generic IP cameras,
+      Ring, Wi-Fi deauthers, evil-twin access points and pentest kit — and then pipes what it finds
+      into <strong>Anansi</strong>, the regional intelligence globe, as a mappable layer. It is the
+      field-sensor arm of Operation Anansi.</p>
+      <p>The work came in three parts, in this order: a custom Flipper firmware to live on
+      (<strong>?xOS</strong>), the sensor + app that are the real payload (<strong>Spider Sense</strong>),
+      and the bridge that feeds it back to the globe (<strong>Anansi integration</strong>).</p>
+    </div>
+    <h2 style="font-size:26px;">Assets &amp; <span class="accent">Methods</span></h2>
+    <div class="panel" style="padding:0; overflow:hidden;">
+      <table>
+        <tr><th>Asset</th><th>Function</th></tr>
+        <tr><td>Flipper Zero</td><td>Handheld host — display, alerts, controls, GPIO bridge</td></tr>
+        <tr><td>?xOS firmware</td><td>Personal Flipper firmware (official-based), ghost-themed, Spider Sense bundled</td></tr>
+        <tr><td>Wi-Fi Dev Board (ESP32-S2)</td><td>Headless sensor — 2.4 GHz sniffing, detection matching, UART out</td></tr>
+        <tr><td>Spider Sense firmware</td><td>SquachWatch detection engine, re-stated as a serial sensor build</td></tr>
+        <tr><td>Spider Sense app (.fap)</td><td>Flipper app — live list, detail, vibrate/LED/sound alerts</td></tr>
+        <tr><td>Wire protocol</td><td><code>SQW,*</code> text lines over GPIO UART, 115200</td></tr>
+        <tr><td>Anansi integration</td><td>God's Eye View data layer: serial middleware → GeoJSON → globe</td></tr>
+        <tr><td>Detection catalog</td><td>Flock, Axon, ALPR, camera, Ring, deauth, evil-twin, pentest gear</td></tr>
+      </table>
+    </div>
+  </section>
 
-  <div class="logentry">
-    <span class="tag">ENTRY 004 — THE WIRE</span>
-    <h3>A deliberately boring protocol</h3>
-    <p>The board and the Flipper talk in plain comma-separated text, one record per line, so any
-    ESP32 that speaks it works with the app and any terminal can read it. Free text (vendor, SSID)
-    always comes last with its separators scrubbed, so one odd network name can never split a
-    record.</p>
-    <pre class="schematic">SQW,HELLO,&lt;firmware&gt;,flipper-devboard,wifi
+  <!-- 02 -->
+  <section>
+    <div class="sec-tag"><span class="n">02</span> · FIELD LOG</div>
+    <h2>The <span class="accent">Build</span>, Panel by Panel</h2>
+
+    <div class="logentry">
+      <div class="entry-num">1</div>
+      <span class="tag">PART ONE · THE FIRMWARE</span>
+      <h3>?xOS — a Flipper to live on</h3>
+      <p>Before the sensor, the handheld needed its own identity. <strong>?xOS</strong> (by
+      <strong>whoXisXhe</strong>) is a personal Flipper Zero firmware that swaps the stock dolphin
+      for a spider/ghost world. It was built twice on purpose: first on <strong>RogueMaster</strong>
+      — a full custom firmware with hundreds of bundled tools, where ~<strong>523</strong> of its
+      apps compiled cleanly after a build-and-triage pass — then rebuilt from scratch on the
+      <strong>official Flipper firmware (1.4.3, API 87.1)</strong> for a clean, upstream-compatible
+      base, renamed <strong>?xOS</strong>.</p>
+      <p>Every piece of dolphin art is replaced by <strong>original characters drawn in code</strong>
+      — generic arcade-style ghosts and a masked web-slinger, not anybody's licensed mascots — from
+      a Python pipeline that renders 1-bit frames with the Flipper's own fonts: eight idle
+      animations (a web-weaver, a graveyard float, peek-a-boo, rise-from-grave, a corridor chase, a
+      conga line, a spooked jump, a vanish), plus every system screen (success, save, NFC/RFID,
+      Sub-GHz, U2F, pairing, the passport portraits, the CLI banner). Spider Sense ships inside it.</p>
+      <figure>
+        <img src="../images/xos-ghosts.gif" alt="?xOS original ghost idle animations on the Flipper screen">
+        <figcaption>?xOS idle animations — original ghost art, rendered from code, playing on the 128×64 screen</figcaption>
+      </figure>
+    </div>
+
+    <div class="logentry">
+      <div class="entry-num">2</div>
+      <span class="tag">THE SENSOR</span>
+      <h3>ESP32 on the GPIO header</h3>
+      <p>The detector itself is the <strong>SquachWatch</strong> engine re-stated as a headless
+      serial sensor for the official Flipper <strong>Wi-Fi Dev Board (ESP32-S2)</strong>. It puts the
+      radio in listen-only mode, hops channels 1–13, and matches every frame against SquachWatch's
+      signature tables — the same OUI / SSID / behavior rules that power the full device — then
+      streams one text line per finding out of UART0 to the Flipper's GPIO pins (13/14) at 115200.
+      No network, no beacon of its own: it only listens, so nothing in the room can tell it is
+      there.</p>
+      <p>One hard limit shaped everything: the S2 has <strong>no Bluetooth radio at all</strong>. So
+      the whole Wi-Fi catalog works — Flock, Axon, ALPR, cameras, Ring, deauth floods, evil-twin
+      APs, and pentest gear like Pwnagotchi and the Wi-Fi Pineapple — but the Bluetooth half of
+      SquachWatch (AirTags, trackers, camera glasses, BLE skimmers, Remote ID drones) sits dark until
+      the sensor moves to a Bluetooth-capable board. The code for those detections already exists;
+      the chip just can't run them.</p>
+    </div>
+
+    <div class="logentry">
+      <div class="entry-num">3</div>
+      <span class="tag">PART TWO · THE MEAT</span>
+      <h3>Spider Sense — the Flipper app</h3>
+      <p>This is the core of the project. <strong>Spider Sense</strong> is a native Flipper Zero app
+      (<code>.fap</code>) that reads the sensor's lines over the GPIO UART and turns them into a live
+      operator display. It opens on an Anansi splash, then shows the latest detection, a running
+      list of the last 32, and a detail view per device (type, vendor, MAC, RSSI, channel,
+      confidence). Each <b>new</b> detection buzzes the Flipper, flashes the LED, and chirps — the
+      LED on the board flashes too, so it works even glanced-at in a pocket.</p>
+      <p>Controls map to the pad: <b>OK</b> opens the list, <b>Up</b> pauses, <b>Down</b> locks or
+      hops the channel, <b>Left</b> toggles sound, <b>Right</b> steps the minimum confidence
+      (LOW → MED → HIGH) so a passing ESP32 dev board doesn't cry wolf as a possible Flock camera.
+      It's built against the <strong>dev-channel SDK</strong> so the same <code>.fap</code> loads on
+      RogueMaster, Momentum, Unleashed and official firmware — and confirmed <b>LIVE</b> on real
+      hardware, streaming detections from the board on the header.</p>
+      <figure>
+        <img src="../images/spider-sense-ui.png" alt="Spider Sense Flipper app — splash screen and live detection screen">
+        <figcaption>Spider Sense on the Flipper — the Anansi splash (top) and a live FLOCK detection with signal, channel and confidence (bottom)</figcaption>
+      </figure>
+    </div>
+
+    <div class="logentry">
+      <div class="entry-num">4</div>
+      <span class="tag">THE WIRE</span>
+      <h3>A deliberately boring protocol</h3>
+      <p>The board and the Flipper talk in plain comma-separated text, one record per line, so any
+      ESP32 that speaks it works with the app and any terminal can read it. Free text (vendor, SSID)
+      always comes last with its separators scrubbed, so one odd network name can never split a
+      record.</p>
+      <pre class="schematic">SQW,HELLO,&lt;firmware&gt;,flipper-devboard,wifi
 SQW,STAT,&lt;uptime&gt;,&lt;frames/s&gt;,&lt;channel&gt;,&lt;hopping&gt;,&lt;running&gt;,&lt;total&gt;,&lt;dropped&gt;
 SQW,DET,&lt;NEW|AGAIN|SEEN&gt;,&lt;TYPE&gt;,&lt;H|M|L&gt;,&lt;MAC&gt;,&lt;rssi&gt;,&lt;channel&gt;,&lt;hits&gt;,&lt;vendor&gt;,&lt;name&gt;</pre>
-    <p>That same line format is what the Anansi side consumes — which is what made the integration
-    clean.</p>
-  </div>
+      <p>That same line format is what the Anansi side consumes — which is what made the integration
+      clean.</p>
+    </div>
 
-  <div class="logentry">
-    <span class="tag">ENTRY 005 — PART THREE · THE WRAP-UP</span>
-    <h3>Integrating Spider Sense into Anansi</h3>
-    <p>This is where the two projects tie back together. <strong>Anansi</strong> (the God's Eye
-    View–based intelligence globe) already renders CCTV, traffic and regional feeds; Spider Sense
-    adds <b>ground truth</b> — real surveillance hardware, detected in the field, plotted where it
-    was seen. A new <code>flipperDetections</code> layer brings the sensor onto the globe:</p>
-    <p>A dev-server <b>serial middleware</b> (in <code>vite.config.js</code>, same pattern as
-    Anansi's other proxies) reads the Flipper's COM port — fed by the Flipper's own USB-UART
-    bridge — parses the <code>SQW,*</code> stream into memory, writes a capture CSV, and serves the
-    detections as GeoJSON. A dedicated <b>live layer</b> re-fetches on an interval, so new
-    detections appear on the globe <b>without toggling anything</b>, and while it's enabled the
-    browser quietly posts its geolocation so live hits land at the operator's real position. For
-    precise after-the-fact mapping, a <b>GPX import</b> timestamp-matches a logged phone track to
-    the capture so every detection gets exact coordinates — wardriving, but for surveillance
-    gear. Because the detections carry type and MAC, they can be cross-checked against Anansi's
-    existing CCTV catalog: the globe says a camera should be here; Spider Sense confirms it's live
-    and hands over its hardware address.</p>
-    <p>The integration lives in the Anansi app repo; this sensor and app live here. The
-    <code>SQW</code> protocol above is the seam between them.</p>
-  </div>
+    <div class="logentry">
+      <div class="entry-num">5</div>
+      <span class="tag">PART THREE · THE WRAP-UP</span>
+      <h3>Integrating Spider Sense into Anansi</h3>
+      <p>This is where the two projects tie back together. <strong>Anansi</strong> (the God's Eye
+      View–based intelligence globe) already renders CCTV, traffic and regional feeds; Spider Sense
+      adds <b>ground truth</b> — real surveillance hardware, detected in the field, plotted where it
+      was seen. A new <code>flipperDetections</code> layer brings the sensor onto the globe:</p>
+      <p>A dev-server <b>serial middleware</b> (in <code>vite.config.js</code>, same pattern as
+      Anansi's other proxies) reads the Flipper's COM port — fed by the Flipper's own USB-UART
+      bridge — parses the <code>SQW,*</code> stream into memory, writes a capture CSV, and serves the
+      detections as GeoJSON. A dedicated <b>live layer</b> re-fetches on an interval, so new
+      detections appear on the globe <b>without toggling anything</b>, and while it's enabled the
+      browser quietly posts its geolocation so live hits land at the operator's real position. For
+      precise after-the-fact mapping, a <b>GPX import</b> timestamp-matches a logged phone track to
+      the capture so every detection gets exact coordinates — wardriving, but for surveillance
+      gear. Because the detections carry type and MAC, they can be cross-checked against Anansi's
+      existing CCTV catalog: the globe says a camera should be here; Spider Sense confirms it's live
+      and hands over its hardware address.</p>
+      <p>The integration lives in the Anansi app repo; this sensor and app live here. The
+      <code>SQW</code> protocol above is the seam between them.</p>
+    </div>
 
-  <h2 style="margin-top:34px;">System Architecture</h2>
-  <pre class="schematic">FIELD                                   HANDHELD                 OPERATOR / GLOBE
+    <h2 style="font-size:26px;">System <span class="accent">Architecture</span></h2>
+    <pre class="schematic">FIELD                                   HANDHELD                 OPERATOR / GLOBE
 ┌──────────────────────┐  UART 115200  ┌───────────────┐  USB   ┌────────────────────┐
 │ ESP32-S2 Wi-Fi board │ ── 13/14 ───▶ │ Flipper Zero  │ ─────▶ │ PC — Anansi (vite)  │
 │ Spider Sense sensor  │               │  · ?xOS        │        │  serial middleware  │
@@ -212,124 +395,144 @@ SQW,DET,&lt;NEW|AGAIN|SEEN&gt;,&lt;TYPE&gt;,&lt;H|M|L&gt;,&lt;MAC&gt;,&lt;rssi&g
 └──────────────────────┘               └───────────────┘        └────────────────────┘
          listens only                     shows + alerts            maps + cross-checks
                                                                    (+ phone GPS / GPX)</pre>
-</section>
+  </section>
 
-<section>
-  <div class="sec-tag">03 // OBSTACLES ENCOUNTERED</div>
-  <h2>What Actually Went Wrong</h2>
-  <ul class="debrief">
-    <li><b>The S2 has no Bluetooth</b> — the official Wi-Fi Dev Board is Wi-Fi-only, so half of
-    SquachWatch's catalog (AirTags, trackers, glasses, skimmers, drones) can't run on it. Scoped
-    the sensor to the Wi-Fi detections and documented the Bluetooth half as a board upgrade, not a
-    code gap.</li>
-    <li><b>Flipper app API versioning</b> — a <code>.fap</code> only loads when its API major
-    matches the firmware's and its minor is ≤. Built against the <b>dev-channel SDK</b> so the app
-    loads across RogueMaster / Momentum / Unleashed / official instead of one firmware only.</li>
-    <li><b>RogueMaster → official port</b> — moving ?xOS to the official base meant a large
-    bundled-app triage: of RogueMaster's app set, ~523 compiled against the official API and the
-    rest, which depend on RogueMaster's own firmware patches, were dropped. One app had to go for a
-    duplicate app-id that collided with a firmware built-in.</li>
-    <li><b>A double-compiled app</b> — a stray nested copy of the Spider Sense source made the
-    linker see two definitions of the entry point; flattening the folder fixed it.</li>
-    <li><b>requestRenderMode camera control</b> — on the Anansi side, a new view-control panel's
-    orbit math failed when the center-of-screen pick returned nothing; switched to intersecting the
-    camera's view direction with the ellipsoid, which is layout-independent and always resolves.</li>
-    <li><b>Unrelated git histories</b> — the target repos had their own histories, so updates went
-    onto their own branches rather than force-overwriting anyone's <code>main</code>.</li>
-  </ul>
-  <div class="stamp">WI-FI COMPLETE — BLUETOOTH PENDING HARDWARE</div>
-</section>
+  <!-- 03 -->
+  <section>
+    <div class="sec-tag"><span class="n">03</span> · OBSTACLES</div>
+    <h2>What Actually <span class="accent">Went Wrong</span></h2>
+    <div class="panel">
+      <ul class="debrief">
+        <li><b>The S2 has no Bluetooth</b> — the official Wi-Fi Dev Board is Wi-Fi-only, so half of
+        SquachWatch's catalog (AirTags, trackers, glasses, skimmers, drones) can't run on it. Scoped
+        the sensor to the Wi-Fi detections and documented the Bluetooth half as a board upgrade, not a
+        code gap.</li>
+        <li><b>Flipper app API versioning</b> — a <code>.fap</code> only loads when its API major
+        matches the firmware's and its minor is ≤. Built against the <b>dev-channel SDK</b> so the app
+        loads across RogueMaster / Momentum / Unleashed / official instead of one firmware only.</li>
+        <li><b>RogueMaster → official port</b> — moving ?xOS to the official base meant a large
+        bundled-app triage: of RogueMaster's app set, ~523 compiled against the official API and the
+        rest, which depend on RogueMaster's own firmware patches, were dropped. One app had to go for a
+        duplicate app-id that collided with a firmware built-in.</li>
+        <li><b>A double-compiled app</b> — a stray nested copy of the Spider Sense source made the
+        linker see two definitions of the entry point; flattening the folder fixed it.</li>
+        <li><b>requestRenderMode camera control</b> — on the Anansi side, a new view-control panel's
+        orbit math failed when the center-of-screen pick returned nothing; switched to intersecting the
+        camera's view direction with the ellipsoid, which is layout-independent and always resolves.</li>
+        <li><b>Unrelated git histories</b> — the target repos had their own histories, so updates went
+        onto their own branches rather than force-overwriting anyone's <code>main</code>.</li>
+      </ul>
+    </div>
+    <span class="stamp">WI-FI COMPLETE — BLUETOOTH PENDING HARDWARE</span>
+  </section>
 
-<section>
-  <div class="sec-tag">04 // FUTURE OPERATIONS</div>
-  <h2>What's Next</h2>
-  <ul class="debrief">
-    <li>Move the sensor to a <b>Bluetooth-capable ESP32 (original or S3) with onboard GPS</b> —
-    unlocks the full detection catalog (AirTags, trackers, glasses, drones) <i>and</i> self-locating
-    detections, no phone required.</li>
-    <li>Have the ESP32 stamp each detection with GPS at the source, so the Anansi layer gets exact
-    coordinates live instead of via GPX timestamp-matching.</li>
-    <li>Cross-match detections against Anansi's CCTV catalog automatically — confirm mapped
-    cameras, and flag <b>unmapped</b> ones the field sensor discovers.</li>
-    <li>Optional LoRa/mesh relay so multiple sensors report into one Anansi picture.</li>
-  </ul>
-</section>
+  <!-- 04 -->
+  <section>
+    <div class="sec-tag"><span class="n">04</span> · FUTURE OPS</div>
+    <h2>What's <span class="accent">Next</span></h2>
+    <div class="panel">
+      <ul class="debrief">
+        <li>Move the sensor to a <b>Bluetooth-capable ESP32 (original or S3) with onboard GPS</b> —
+        unlocks the full detection catalog (AirTags, trackers, glasses, drones) <i>and</i> self-locating
+        detections, no phone required.</li>
+        <li>Have the ESP32 stamp each detection with GPS at the source, so the Anansi layer gets exact
+        coordinates live instead of via GPX timestamp-matching.</li>
+        <li>Cross-match detections against Anansi's CCTV catalog automatically — confirm mapped
+        cameras, and flag <b>unmapped</b> ones the field sensor discovers.</li>
+        <li>Optional LoRa/mesh relay so multiple sensors report into one Anansi picture.</li>
+      </ul>
+    </div>
+  </section>
 
-<section>
-  <div class="sec-tag">05 // WHAT THIS DEMONSTRATES</div>
-  <h2>Skills Applied</h2>
-  <ul class="debrief">
-    <li><b>Embedded firmware</b> — an ESP32 Wi-Fi sniffer/sensor build and a native Flipper Zero
-    application in C, against two different SDKs.</li>
-    <li><b>Cross-platform build systems</b> — PlatformIO for the ESP32, the Flipper build toolchain
-    (ufbt / fbt) for the app and firmware, plus a Python asset pipeline that renders 1-bit UI art.</li>
-    <li><b>Protocol design</b> — a deliberately simple, resilient serial wire format that decouples
-    sensor, handheld and globe.</li>
-    <li><b>Firmware engineering</b> — porting a custom firmware onto an upstream base, resolving
-    API-version and app-id conflicts, and flashing/validating on real hardware.</li>
-    <li><b>Geospatial integration</b> — a live data layer on a CesiumJS globe fed from a serial
-    device, with browser geolocation and GPX timestamp-matching.</li>
-    <li><b>Original UI / brand work</b> — a code-generated ghost + spider art set designed to avoid
-    anyone else's IP while carrying a consistent identity.</li>
-  </ul>
-</section>
+  <!-- 05 -->
+  <section>
+    <div class="sec-tag"><span class="n">05</span> · THE TAKEAWAY</div>
+    <h2>Skills <span class="accent">Applied</span></h2>
+    <div class="panel">
+      <ul class="debrief">
+        <li><b>Embedded firmware</b> — an ESP32 Wi-Fi sniffer/sensor build and a native Flipper Zero
+        application in C, against two different SDKs.</li>
+        <li><b>Cross-platform build systems</b> — PlatformIO for the ESP32, the Flipper build toolchain
+        (ufbt / fbt) for the app and firmware, plus a Python asset pipeline that renders 1-bit UI art.</li>
+        <li><b>Protocol design</b> — a deliberately simple, resilient serial wire format that decouples
+        sensor, handheld and globe.</li>
+        <li><b>Firmware engineering</b> — porting a custom firmware onto an upstream base, resolving
+        API-version and app-id conflicts, and flashing/validating on real hardware.</li>
+        <li><b>Geospatial integration</b> — a live data layer on a CesiumJS globe fed from a serial
+        device, with browser geolocation and GPX timestamp-matching.</li>
+        <li><b>Original UI / brand work</b> — a code-generated ghost + spider art set designed to avoid
+        anyone else's IP while carrying a consistent identity.</li>
+      </ul>
+    </div>
+  </section>
 
-<section>
-  <div class="sec-tag">06 // METHODOLOGY NOTE</div>
-  <h2>On the Use of AI</h2>
-  <p>Claude (Anthropic) was used throughout as a coding, debugging and design assistant — writing
-  the ESP32 sensor build and the Flipper app, porting ?xOS onto the official firmware, generating
-  the original ghost/spider art pipeline, and building the Anansi data layer and this debrief. The
-  hardware decisions, the real-device testing, and every commit were driven directly; Claude
-  functioned as a pair-programming and research tool, not an autonomous builder. Being upfront
-  about that split is more honest than presenting it as solo work.</p>
-</section>
+  <!-- 06 -->
+  <section>
+    <div class="sec-tag"><span class="n">06</span> · METHODOLOGY</div>
+    <h2>On the Use of <span class="accent">AI</span></h2>
+    <div class="caption">Being upfront about the split is more honest than presenting it as solo work.</div>
+    <div class="panel">
+      <p>Claude (Anthropic) was used throughout as a coding, debugging and design assistant — writing
+      the ESP32 sensor build and the Flipper app, porting ?xOS onto the official firmware, generating
+      the original ghost/spider art pipeline, and building the Anansi data layer and this debrief. The
+      hardware decisions, the real-device testing, and every commit were driven directly; Claude
+      functioned as a pair-programming and research tool, not an autonomous builder.</p>
+    </div>
+  </section>
 
-<section>
-  <div class="sec-tag">07 // SOURCE ATTRIBUTION</div>
-  <h2>Credit</h2>
-  <div class="credit-box">
-    The detection engine — the signatures, the OUI/SSID/behavior rules, the whole idea of a
-    surveillance-device detector — is <b>SquachWatch-CYD</b> by
-    <b><a href="https://github.com/skizzophrenic/SquachWatch-CYD" target="_blank" rel="noopener">skizzophrenic</a></b>.
-    Spider Sense re-states its Wi-Fi detection core as a headless serial sensor for the Flipper dev
-    board and adds the companion app; the hard part — knowing what a Flock camera or a Pineapple
-    actually looks like on the air — is theirs. Full credit for the foundation.
-  </div>
-  <div class="credit-box" style="margin-top:14px;">
-    <b><a href="https://github.com/RogueMaster/flipperzero-firmware-wPlugins" target="_blank" rel="noopener">RogueMaster</a></b>
-    and the wider Flipper custom-firmware community built the firmware ?xOS was first grown on, and
-    the enormous bundled-app ecosystem that came with it. ?xOS stands on that work before it was
-    rebuilt on the official base.
-  </div>
-  <div class="credit-box" style="margin-top:14px;">
-    <b><a href="https://github.com/flipperdevices/flipperzero-firmware" target="_blank" rel="noopener">Flipper Devices</a></b>
-    makes the Flipper Zero and the official firmware that the final ?xOS build is based on, and the
-    SDK the Spider Sense app targets.
-  </div>
-  <div class="credit-box" style="margin-top:14px;">
-    The Anansi globe it feeds into is built on <b>God's Eye View</b> by
-    <b><a href="https://github.com/bilawalsidhu/gods-eye-view" target="_blank" rel="noopener">Bilawal Sidhu</a></b>
-    — see the <a href="https://tvw-80.github.io/Ananasi-intel/" target="_blank" rel="noopener">Operation Anansi debrief</a>
-    for that side of the project.
-  </div>
-</section>
+  <!-- 07 -->
+  <section>
+    <div class="sec-tag"><span class="n">07</span> · CREDITS</div>
+    <h2>Standing on <span class="accent">Other People's Work</span></h2>
+    <div class="credit-box">
+      <span class="who">SquachWatch-CYD · skizzophrenic</span>
+      The detection engine — the signatures, the OUI/SSID/behavior rules, the whole idea of a
+      surveillance-device detector — is <b>SquachWatch-CYD</b> by
+      <a href="https://github.com/skizzophrenic/SquachWatch-CYD" target="_blank" rel="noopener">skizzophrenic</a>.
+      Spider Sense re-states its Wi-Fi detection core as a headless serial sensor for the Flipper dev
+      board and adds the companion app; the hard part — knowing what a Flock camera or a Pineapple
+      actually looks like on the air — is theirs. Full credit for the foundation.
+    </div>
+    <div class="credit-box">
+      <span class="who">RogueMaster &amp; the CFW community</span>
+      <a href="https://github.com/RogueMaster/flipperzero-firmware-wPlugins" target="_blank" rel="noopener">RogueMaster</a>
+      and the wider Flipper custom-firmware community built the firmware ?xOS was first grown on, and
+      the enormous bundled-app ecosystem that came with it. ?xOS stands on that work before it was
+      rebuilt on the official base.
+    </div>
+    <div class="credit-box">
+      <span class="who">Flipper Devices</span>
+      <a href="https://github.com/flipperdevices/flipperzero-firmware" target="_blank" rel="noopener">Flipper Devices</a>
+      makes the Flipper Zero and the official firmware that the final ?xOS build is based on, and the
+      SDK the Spider Sense app targets.
+    </div>
+    <div class="credit-box">
+      <span class="who">God's Eye View · Bilawal Sidhu</span>
+      The Anansi globe it feeds into is built on <b>God's Eye View</b> by
+      <a href="https://github.com/bilawalsidhu/gods-eye-view" target="_blank" rel="noopener">Bilawal Sidhu</a>
+      — see the <a href="https://tvw-80.github.io/Ananasi-intel/" target="_blank" rel="noopener">Operation Anansi debrief</a>
+      for that side of the project.
+    </div>
+  </section>
 
-<section>
-  <div class="sec-tag">08 // DEBRIEF SUMMARY</div>
-  <h2>Where This Leaves Things</h2>
-  <p>A custom Flipper firmware, a field sensor, and a companion app were built end to end and
-  confirmed live on real hardware — a handheld that detects surveillance gear on the air — and then
-  wired back into the Anansi intelligence globe as a mappable, self-locating feed. ?xOS gave it a
-  home; Spider Sense is the payload; the Anansi integration is what makes a detection in a parking
-  lot show up as a pin on the map. Wi-Fi is done and running; Bluetooth is one board away.</p>
-  <div class="stamp" style="border-color:var(--gold-bright); color:var(--gold-bright);">OPERATION COMPLETE</div>
-</section>
+  <!-- 08 -->
+  <section>
+    <div class="sec-tag"><span class="n">08</span> · SUMMARY</div>
+    <h2>Where This <span class="accent">Leaves Things</span></h2>
+    <div class="panel">
+      <p>A custom Flipper firmware, a field sensor, and a companion app were built end to end and
+      confirmed live on real hardware — a handheld that detects surveillance gear on the air — and then
+      wired back into the Anansi intelligence globe as a mappable, self-locating feed. ?xOS gave it a
+      home; Spider Sense is the payload; the Anansi integration is what makes a detection in a parking
+      lot show up as a pin on the map. Wi-Fi is done and running; Bluetooth is one board away.</p>
+    </div>
+    <span class="stamp done">OPERATION COMPLETE</span>
+  </section>
 
-<footer class="doc">
-  <span>END OF FILE — OP-SPIDER-SENSE</span>
-  <a href="../">← RETURN TO ENTRY POINT</a>
-</footer>
+  <footer class="strip">
+    <span>END OF FILE · SPIDER SENSE</span>
+    <a href="../">← BACK TO COVER</a>
+  </footer>
 
 </div>
 </body>
