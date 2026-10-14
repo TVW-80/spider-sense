@@ -20,10 +20,15 @@
 <style>
   :root {
     --ink: #121212;
-    --paper: #f3eede;
-    --panel: #ffffff;
+    --paper: #d3d8de;                 /* silver page tone */
+    --silver-light: #eef1f4;
+    --silver: #c7ccd3;
+    --silver-dark: #a6acb5;
+    --panel: linear-gradient(158deg, #ffffff 0%, #eef1f4 42%, #d9dee4 100%);          /* chrome plate */
+    --chrome: linear-gradient(180deg, #f7f9fa 0%, #d4d9df 47%, #b7bdc6 53%, #e8ebee 100%); /* brushed metal strip */
     --green: #15a34a;
     --green-bright: #28c766;
+    --green-deep: #0f7a37;
     --yellow: #ffe24a;
     --red: #ef3e36;
     --display: 'Bangers', cursive;
@@ -34,9 +39,12 @@
   body {
     background-color: var(--paper);
     background-image:
-      radial-gradient(circle, rgba(18,18,18,0.07) 1px, transparent 1.3px),
-      radial-gradient(circle at 50% 0, rgba(21,163,74,0.12), transparent 60%);
-    background-size: 7px 7px, 100% 100%;
+      radial-gradient(circle, rgba(18,18,18,0.05) 1px, transparent 1.3px),
+      linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0) 32%),
+      radial-gradient(circle at 50% -5%, rgba(21,163,74,0.12), transparent 55%),
+      linear-gradient(160deg, #e7eaee 0%, #cfd4da 50%, #bcc2ca 100%);
+    background-size: 7px 7px, 100% 100%, 100% 100%, 100% 100%;
+    background-attachment: fixed;
     font-family: var(--body);
     color: var(--ink);
     display: flex;
@@ -48,14 +56,38 @@
   }
   .cover { width: 100%; max-width: 560px; }
 
+  /* spinning cross-link badge → Anansi */
+  .crosslink {
+    position: fixed; top: 14px; right: 14px; z-index: 60;
+    width: 64px; height: 64px; display: block; border: none; border-radius: 50%;
+  }
+  .crosslink img {
+    width: 100%; height: 100%; display: block; border-radius: 50%;
+    border: 3px solid var(--ink); background: #020202;
+    box-shadow: 3px 3px 0 var(--ink);
+    animation: spin 9s linear infinite;
+  }
+  .crosslink:hover img { animation-duration: 2.2s; }
+  .crosslink::after {
+    content: "OPERATION ANANSI";
+    position: absolute; top: 50%; right: 74px; transform: translateY(-50%);
+    white-space: nowrap; font-family: var(--display); font-size: 13px; letter-spacing: 0.04em;
+    color: var(--ink); background: var(--chrome); border: 2px solid var(--ink);
+    padding: 3px 9px 1px; box-shadow: 2px 2px 0 var(--ink);
+    opacity: 0; pointer-events: none; transition: opacity 0.15s;
+  }
+  .crosslink:hover::after { opacity: 1; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .crosslink img { animation: none; } }
+
   .issue-strip {
     display: flex; justify-content: space-between; align-items: center;
-    background: var(--ink); color: var(--paper);
+    background: var(--chrome); color: var(--ink);
     font-family: var(--display); letter-spacing: 0.06em;
     font-size: 15px; padding: 7px 16px;
     border: 3px solid var(--ink);
   }
-  .issue-strip .num { color: var(--green-bright); }
+  .issue-strip .num { color: var(--green-deep); }
 
   .cover-panel {
     position: relative;
@@ -63,7 +95,7 @@
     border: 4px solid var(--ink);
     border-top: none;
     box-shadow: 8px 8px 0 var(--ink);
-    padding: 34px 26px 30px;
+    padding: 30px 26px 30px;
     text-align: center;
     overflow: hidden;
   }
@@ -74,14 +106,14 @@
     background-size: 9px 9px;
     pointer-events: none;
   }
-  .emblem { position: relative; width: 200px; height: 200px; margin: 0 auto 10px; filter: drop-shadow(4px 4px 0 rgba(18,18,18,0.18)); }
+  .emblem { position: relative; width: 210px; height: 210px; margin: 0 auto 8px; filter: drop-shadow(5px 5px 0 rgba(18,18,18,0.18)); }
 
   .logo {
     position: relative;
     font-family: var(--display);
     font-size: clamp(54px, 15vw, 82px);
     line-height: 0.86;
-    margin: 6px 0 0;
+    margin: 4px 0 0;
     letter-spacing: 0.02em;
     color: var(--ink);
     text-shadow: 3px 3px 0 var(--green);
@@ -99,13 +131,13 @@
     font-weight: 600; font-size: 12px; letter-spacing: 0.04em;
     color: #4a4a4a; margin: 6px 0 22px;
   }
-  .sub a { color: var(--green); text-decoration: none; border-bottom: 2px solid var(--green); }
+  .sub a { color: var(--green-deep); text-decoration: none; border-bottom: 2px solid var(--green); }
 
   .cta {
     position: relative;
     display: inline-block;
     font-family: var(--display); font-size: 24px; letter-spacing: 0.04em;
-    color: var(--paper); background: var(--ink);
+    color: var(--silver-light); background: var(--ink);
     text-decoration: none; padding: 11px 28px;
     border: 3px solid var(--ink);
     box-shadow: 5px 5px 0 var(--green);
@@ -121,16 +153,20 @@
     border: 3px solid var(--ink); border-top: none;
   }
   @media (prefers-reduced-motion: reduce) { .cta { transition: none; } }
+  @media (max-width: 440px) { .crosslink { width: 52px; height: 52px; } }
 </style>
 </head>
 <body>
+  <a class="crosslink" href="https://tvw-80.github.io/Ananasi-intel/" target="_blank" rel="noopener" title="Operation Anansi" aria-label="Go to Operation Anansi">
+    <img src="images/anansi-logo.svg" alt="Operation Anansi logo">
+  </a>
   <div class="cover">
     <div class="issue-strip">
       <span>OPERATION&nbsp;ANANSI</span>
       <span>FIELD OPS&nbsp;·&nbsp;<span class="num">ISSUE 01</span></span>
     </div>
     <div class="cover-panel">
-      <img class="emblem" src="images/spider-sense-emblem.svg" alt="Spider Sense emblem — a spider on a green web">
+      <img class="emblem" src="images/spider-sense-logo.png" alt="Spider Sense logo — a masked web-slinger in a green web">
       <h1 class="logo">SPIDER<span>SENSE</span></h1>
       <p class="tag">Flipper Zero Field Intelligence</p>
       <p class="sub">a field-ops module of <a href="https://tvw-80.github.io/Ananasi-intel/">OPERATION ANANSI</a></p>
